@@ -3,8 +3,13 @@ const Restaurant = require('../models/Restaurant.js');
 //@desc     Get all restaurants
 //@route    GET /api/v1/restaurants
 //@access   Public
-exports.getRestaurants = (req, res) => {
-    res.status(200).json({success: true, msg: 'Show all restaurants'});
+exports.getRestaurants = async (req, res) => {
+    try {
+        const restaurants = await Restaurant.find();
+        res.status(200).json({success: true, count: restaurants.length, data: restaurants});
+    } catch (err) {
+        res.status(400).json({success: false});
+    }
 };
 
 //@desc     Get single restaurants
