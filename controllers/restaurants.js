@@ -15,8 +15,16 @@ exports.getRestaurants = async (req, res) => {
 //@desc     Get single restaurants
 //@route    GET /api/v1/restaurants/:id
 //@access   Public
-exports.getRestaurant = (req, res) => {
-    res.status(200).json({success: true, msg: `Show restaurant with ID: ${req.params.id}`});
+exports.getRestaurant = async (req, res) => {
+    try {
+        const restaurant = await Restaurant.findById(req.params.id);
+        if (!restaurant) {
+            return res.status(400).json({success: false});
+        }
+        res.status(200).json({success: true, data: restaurant});
+    } catch (err) {
+        return res.status(400).json({success: false});
+    }
 };
 
 //@desc     Create new restaurant
