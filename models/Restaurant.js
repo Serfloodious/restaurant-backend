@@ -20,10 +20,10 @@ const RestaurantSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Please add a province']
     },
-    postcode: {
+    postalcode: {
         type: String,
-        required: [true, 'Please add a postcode'],
-        maxlength: [5, 'Postcode cannot be more than 5 characters']
+        required: [true, 'Please add a postalcode'],
+        maxlength: [5, 'Postalcode cannot be more than 5 characters']
     },
     phone: {
         type: String
