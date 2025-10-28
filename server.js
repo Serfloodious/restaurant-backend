@@ -12,6 +12,9 @@ connectDB();
 const restaurants = require('./routes/restaurants');
 const app = express();
 
+// Body parser
+app.use(express.json());
+
 // Mount routers
 app.use('/api/v1/restaurants', restaurants);
 
