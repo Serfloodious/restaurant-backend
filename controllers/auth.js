@@ -113,6 +113,10 @@ exports.updateDetails = async (req, res, next) => {
             runValidators: true
         });
 
+        if (!user) {
+            return res.status(400).json({success: false});
+        }
+
         res.status(200).json({
             success: true,
             data: user
@@ -120,5 +124,49 @@ exports.updateDetails = async (req, res, next) => {
     } catch (err) {
         res.status(400).json({success: false});
     }
-}
+};
 
+// @desc    Update user password
+// @route   PUT /api/v1/auth/updatepassword
+// @access  Private
+exports.updatePassword = async (req, res, next) => {
+    try {
+        const { currentPassword, newPassword } = req.body;
+
+        // Validate input
+        if (!currentPassword || !newPassword) {
+            return res.status(400).json({
+                success: false,
+                message: 'Please provide both current password and new password'
+            });
+        }
+
+        // Get user from collection
+        const user = await User.findById(req.user.id).select('+password');
+
+        if (!user) {
+            return res.status(400).json({success: false});
+        }
+
+        // Check current password
+        const isMatch = await user.matchPassword(currentPassword);
+
+        if (!isMatch) {
+            return res.status(401).json({ 
+                success: false, 
+                message: 'Invalid credentials' 
+            });
+        }
+
+        user.password = newPassword;
+        await user.save();
+
+        res.status(200).json({
+            success: true,
+            message: 'Password updated successfully'
+        });
+
+    } catch (err) {
+        res.status(400).json({success: false});
+    }
+};
