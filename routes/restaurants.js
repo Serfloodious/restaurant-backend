@@ -3,12 +3,14 @@ const {getRestaurants, getRestaurant, createRestaurant, updateRestaurant, delete
 
 const router = express.Router();
 
+const {protect} = require('../middleware/auth');
+
 router.route('/')
     .get(getRestaurants)
-    .post(createRestaurant);
+    .post(protect, createRestaurant);
 router.route('/:id')
     .get(getRestaurant)
-    .put(updateRestaurant)
-    .delete(deleteRestaurant);
+    .put(protect, updateRestaurant)
+    .delete(protect, deleteRestaurant);
 
 module.exports = router;
