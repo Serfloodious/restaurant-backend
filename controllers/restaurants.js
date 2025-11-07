@@ -1,4 +1,5 @@
 const Restaurant = require('../models/Restaurant');
+const Reservation = require('../models/Reservation');
 
 // @desc    Get all restaurants
 // @route   GET /api/v1/restaurants
@@ -87,7 +88,10 @@ exports.getRestaurant = async (req, res, next) => {
         const restaurant = await Restaurant.findById(req.params.id);
 
         if (!restaurant) {
-            return res.status(400).json({success: false});
+            return res.status(404).json({
+                success: false,
+                message: `Restaurant not found with id of ${req.params.id}`
+            });
         }
 
         res.status(200).json({
@@ -121,7 +125,10 @@ exports.updateRestaurant = async (req, res, next) => {
         });
 
         if (!restaurant) {
-            return res.status(400).json({success: false});
+            return res.status(404).json({
+                success: false,
+                message: `Restaurant not found with id of ${req.params.id}`
+            });
         }
 
         res.status(200).json({
@@ -138,11 +145,17 @@ exports.updateRestaurant = async (req, res, next) => {
 // @access  Private
 exports.deleteRestaurant = async(req, res, next) => {
     try {
-        const restaurant = await Restaurant.findByIdAndDelete(req.params.id);
+        const restaurant = await Restaurant.findById(req.params.id);
 
         if (!restaurant) {
-            return res.status(400).json({success: false});
+            return res.status(404).json({
+                success: false,
+                message: `Restaurant not found with id of ${req.params.id}`
+            });
         }
+
+        await Appointment.deleteMany({restaurant: req.params.id});
+        await Restaurant.deleteOne({_id: req.params.id});
 
         res.status(200).json({
             success: true,
