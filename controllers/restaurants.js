@@ -5,7 +5,15 @@ const Restaurant = require('../models/Restaurant');
 // @access  Public
 exports.getRestaurants = async (req, res, next) => {
     try {
-        const restaurants = await Restaurant.find();
+        let query;
+        
+        // Create query string
+        let queryStr = JSON.stringify(req.query);
+        queryStr = queryStr.replace(/\b(gt|gte|lt|lte|in)\b/g, match => `$${match}`);
+        query = Restaurant.find(JSON.parse(queryStr));
+
+        const restaurants = await query;
+
         res.status(200).json({
             success: true,
             count: restaurants.length,
