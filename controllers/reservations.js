@@ -26,8 +26,6 @@ exports.getReservations = async (req, res, next) => {
                 select: 'name province phone'
             });
         }
-
-        
     }
 
     try {
@@ -104,6 +102,67 @@ exports.addReservation = async (req, res, next) => {
         res.status(500).json({
             success: false,
             message: "Cannot create reservation"
+        });
+    }
+};
+
+// @desc    Update reservation
+// @route   PUT /api/v1/reservations/:id
+// @access  Private
+exports.updateReservation = async (req, res, next) => {
+    try {
+        let reservation = await Reservation.findById(req.params.id);
+
+        if (!reservation) {
+            return res.status(404).json({
+                success: false,
+                message: `No reservation with id of ${req.params.id}`
+            });
+        }
+
+        reservation = await Reservation.findByIdAndUpdate(req.params.id, req.body, {
+            new: true,
+            runValidators: true
+        });
+
+        res.status(200).json({
+            success: true,
+            data: reservation
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({
+            success: false,
+            message: "Cannot update reservation"
+        });
+    }
+};
+
+// @desc    Delete reservation
+// @route   DELETE /api/v1/reservations/:id
+// @access  Private
+exports.deleteReservation = async (req, res, next) => {
+    try {
+        const reservation = await Reservation.findById(req.params.id);
+
+        if (!reservation) {
+            return res.status(404).json({
+                success: false,
+                message: `No reservation with id of ${req.params.id}`
+            });
+        }
+
+        await reservation.deleteOne();
+
+        res.status(200).json({
+            success: true,
+            data: {}
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({
+            success: false,
+            message: "Cannot delete reservation"
         });
     }
 };
