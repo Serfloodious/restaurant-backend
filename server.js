@@ -6,6 +6,7 @@ const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
 const {xss} = require('express-xss-sanitizer');
 const rateLimit = require('express-rate-limit');
+const hpp = require('hpp');
 
 // Load environment variables from config file
 dotenv.config({ path: './config/config.env' });
@@ -44,6 +45,9 @@ const limiter = rateLimit({
     max: 100
 });
 app.use(limiter);
+
+// Prevent http param pollution
+app.use(hpp());
 
 // Cookie parser
 app.use(cookieParser());
