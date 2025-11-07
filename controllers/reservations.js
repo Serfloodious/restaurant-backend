@@ -1,4 +1,5 @@
 const Reservation = require('../models/Reservation');
+const Restaurant = require('../models/Restaurant');
 
 // @desc    Get all reservations
 // @route   GET /api/v1/reservations
@@ -72,6 +73,37 @@ exports.getReservation = async (req, res, next) => {
         res.status(500).json({
             success: false,
             message: "Cannot find reservation"
+        });
+    }
+};
+
+// @desc    Add reservation
+// @route   POST /api/v1/restaurants/:restaurantId/reservations
+// @access  Private
+exports.addReservation = async (req, res, next) => {
+    try {
+        req.body.restaurant = req.params.restaurantId;
+
+        const restaurant = await Restaurant.findById(req.params.restaurantId);
+
+        if (!restaurant) {
+            return res.status(404).json({
+                success: false,
+                message: `No restaurant with id of ${req.params.restaurantId}`
+            });
+        }
+
+        const reservation = await Reservation.create(req.body);
+
+        res.status(201).json({
+            success: true,
+            data: reservation
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({
+            success: false,
+            message: "Cannot create reservation"
         });
     }
 };

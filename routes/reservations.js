@@ -1,11 +1,13 @@
 const express = require('express');
-const {getReservations, getReservation} = require('../controllers/reservations');
+const {getReservations, getReservation, addReservation} = require('../controllers/reservations');
 
-const router = express.Router();
+const router = express.Router({mergeParams: true});
 
 const {protect} = require('../middleware/auth');
 
-router.route('/').get(protect, getReservations);
+router.route('/')
+    .get(protect, getReservations)
+    .post(protect, addReservation);
 router.route('/:id').get(protect, getReservation);
 
 module.exports = router;
