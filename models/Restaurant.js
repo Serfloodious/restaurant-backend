@@ -28,14 +28,10 @@ const RestaurantSchema = new mongoose.Schema({
     phone: {
         type: String
     },
-    openinghours: {
+    hours: {
         type: String,
-        required: [true, 'Please add opening hours']
+        required: [true, 'Please add operating hours']
     },
-    closinghours: {
-        type: String,
-        required: [true, 'Please add closing hours']
-    }
 });
 
 module.exports = mongoose.model('Restaurant', RestaurantSchema);
