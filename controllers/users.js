@@ -26,7 +26,6 @@ exports.getUsers = async (req, res, next) => {
         // Finding resource
         query = User.find(JSON.parse(queryStr));
 
-<<<<<<< HEAD
         // Select Fields
         if (req.query.select) {
             const fields = req.query.select.split(',').join(' ');
@@ -50,32 +49,6 @@ exports.getUsers = async (req, res, next) => {
         query = query.skip(startIndex).limit(limit);
 
         // Executing query
-||||||| cd397a4
-=======
-        // Select Fields
-        if (req.query.select) {
-            const fields = req.query.select.split(',').join(' ');
-            query = query.select(fields);
-        }
-        // Sorting
-        if (req.query.sort) {
-            const sortBy = req.query.sort.split(',').join(' ');
-            query = query.sort(sortBy);
-        } else {
-            query = query.sort('-createdAt');
-        }
-
-        // Pagination
-        const page = parseInt(req.query.page, 10) || 1;
-        const limit = parseInt(req.query.limit, 10) || 1;
-        const startIndex = (page - 1) * limit;
-        const endIndex = page * limit;
-        const total = await User.countDocuments();
-
-        query = query.skip(startIndex).limit(limit);
-
-        // Executing query
->>>>>>> 4325aa7a98ad4d546b1a22d8e948e935e01f4205
         const users = await query;
 
         // Pagination result
