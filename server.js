@@ -2,6 +2,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 const cookieParser = require('cookie-parser');
 const connectDB = require('./config/db');
+const mongoSanitize = require('express-mongo-sanitize');
 
 // Load environment variables from config file
 dotenv.config({ path: './config/config.env' });
@@ -19,6 +20,14 @@ const app = express();
 
 // Body parser
 app.use(express.json());
+
+// Sanitize data
+app.use((req, res, next) => {
+    mongoSanitize.sanitize(req.body);
+    mongoSanitize.sanitize(req.params);
+    mongoSanitize.sanitize(req.query);
+    next();
+});
 
 // Cookie parser
 app.use(cookieParser());
