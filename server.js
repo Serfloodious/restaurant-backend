@@ -15,6 +15,7 @@ const restaurants = require('./routes/restaurants');
 const auth = require('./routes/auth');
 const users = require('./routes/users');
 const reservations = require('./routes/reservations');
+const { default: helmet } = require('helmet');
 
 const app = express();
 
@@ -28,6 +29,9 @@ app.use((req, res, next) => {
     mongoSanitize.sanitize(req.query);
     next();
 });
+
+// Set security headers
+app.use(helmet());
 
 // Cookie parser
 app.use(cookieParser());
