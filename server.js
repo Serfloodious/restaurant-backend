@@ -3,6 +3,8 @@ const dotenv = require('dotenv');
 const cookieParser = require('cookie-parser');
 const connectDB = require('./config/db');
 const mongoSanitize = require('express-mongo-sanitize');
+const helmet = require('helmet');
+const {xss} = require('express-xss-sanitizer');
 
 // Load environment variables from config file
 dotenv.config({ path: './config/config.env' });
@@ -15,7 +17,6 @@ const restaurants = require('./routes/restaurants');
 const auth = require('./routes/auth');
 const users = require('./routes/users');
 const reservations = require('./routes/reservations');
-const { default: helmet } = require('helmet');
 
 const app = express();
 
@@ -32,6 +33,9 @@ app.use((req, res, next) => {
 
 // Set security headers
 app.use(helmet());
+
+// Prevent XSS attacks
+app.use(xss());
 
 // Cookie parser
 app.use(cookieParser());
