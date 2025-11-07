@@ -45,3 +45,33 @@ exports.getReservations = async (req, res, next) => {
         });
     }
 };
+
+// @desc    Get single reservation
+// @route   GET /api/v1/reservations/:id
+// @access  Public
+exports.getReservation = async (req, res, next) => {
+    try {
+        const reservation = await Reservation.findById(req.params.id).populate({
+            path: 'restaurant',
+            select: 'name province phone'
+        });
+
+        if (!reservation) {
+            return res.status(404).json({
+                success: false,
+                message: `No reservation with id of ${req.params.id}`
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            data: reservation
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({
+            success: false,
+            message: "Cannot find reservation"
+        });
+    }
+};
