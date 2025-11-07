@@ -154,7 +154,7 @@ exports.deleteRestaurant = async(req, res, next) => {
             });
         }
 
-        await Appointment.deleteMany({restaurant: req.params.id});
+        await Reservation.deleteMany({restaurant: req.params.id});
         await Restaurant.deleteOne({_id: req.params.id});
 
         res.status(200).json({
