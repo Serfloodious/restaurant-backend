@@ -34,7 +34,7 @@ exports.login = async (req, res, next) => {
     if (!email || !password) {
         return res.status(400).json({
             success: false, 
-            message: 'Please provide an email and password'
+            message: 'Please provide both email and password'
         });
     }
 
