@@ -1,9 +1,15 @@
 const express = require('express');
 const {getRestaurants, getRestaurant, createRestaurant, updateRestaurant, deleteRestaurant} = require('../controllers/restaurants');
 
+// Include other resource routers
+const reservationsRouter = require('./reservations');
+
 const router = express.Router();
 
 const {protect, authorize} = require('../middleware/auth');
+
+// Re-route into other resource routers
+router.use('/:restaurantId/reservations', reservationsRouter);
 
 router.route('/')
     .get(getRestaurants)

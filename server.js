@@ -13,6 +13,7 @@ connectDB();
 const restaurants = require('./routes/restaurants');
 const auth = require('./routes/auth');
 const users = require('./routes/users');
+const reservations = require('./routes/reservations');
 
 const app = express();
 
@@ -26,6 +27,7 @@ app.use(cookieParser());
 app.use('/api/v1/restaurants', restaurants);
 app.use('/api/v1/auth', auth);
 app.use('/api/v1/users', users);
+app.use('/api/v1/reservations', reservations);
 
 // Advanced filtering
 app.set('query parser', 'extended');
