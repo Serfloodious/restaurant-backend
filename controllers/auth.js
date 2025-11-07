@@ -1,3 +1,4 @@
+const Reservation = require('../models/Reservation');
 const User = require('../models/User');
 
 // @desc    Register user
@@ -191,4 +192,35 @@ exports.logout = async (req, res, next) => {
         success: true,
         data: {}
     });
+};
+
+// @desc    Delete Account
+// @route   DELETE /api/v1/auth/deleteaccount
+// @access  Private
+exports.deleteAccount = async (req, res, next) => {
+    try {
+        const user = await User.findById(req.user.id);
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: `User not found with id of ${req.user.id}`
+            });
+        }
+
+        await Reservation.deleteMany({user: req.user.id});
+        await User.deleteOne({_id: req.user.id});
+
+        res.status(200)
+            .cookie('token', 'none', {
+                expires: new Date(Date.now() + 10 * 1000),
+                httpOnly: true
+            })
+            .json({
+                success: true,
+                data: {}
+            });
+    } catch (err) {
+        res.status(400).json({success: false});
+    }
 };
