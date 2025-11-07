@@ -5,7 +5,14 @@ const User = require('../models/User');
 // @access  Private
 exports.getUsers = async (req, res, next) => {
     try {
-        const users = await User.find();
+        let query;
+        let queryStr = JSON.stringify(req.query);
+        queryStr = queryStr.replace(/\b(gt|gte|lt|lte|in)\b/g, match => `$${match}`);
+
+        query = User.find(JSON.parse(queryStr));
+
+        const users = await query;
+
         res.status(200).json({
             success: true,
             count: users.length,
