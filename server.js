@@ -8,6 +8,8 @@ const {xss} = require('express-xss-sanitizer');
 const rateLimit = require('express-rate-limit');
 const hpp = require('hpp');
 const cors = require('cors');
+const swaggerJsdoc = require('swagger-jsdoc');
+const swaggerUI = require('swagger-ui-express');
 
 // Load environment variables from config file
 dotenv.config({ path: './config/config.env' });
@@ -75,3 +77,23 @@ process.on('unhandledRejection', (err, promise) => {
     // Close server & exit process
     server.close(() => process.exit(1));
 });
+
+const swaggerOptions = {
+    swaggerDefinition: {
+        openapi: '3.0.0',
+        info: {
+            title: 'ReserveMe API',
+            version: '1.0.0',
+            description: 'API documentation for the ReserveMe application'
+        },
+        servers: [
+            {
+                url: `http://localhost:${PORT}/api/v1`
+            }
+        ],
+    },
+    apis: ['./routes/*.js'],
+};
+
+const swaggerDocs = swaggerJsdoc(swaggerOptions);
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
