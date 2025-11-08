@@ -24,7 +24,7 @@ module.exports = router;
 
 /**
  * @swagger
- * /register:
+ * /auth/register:
  *   post:
  *     summary: Register a new user
  *     tags: [Authentication]
@@ -47,7 +47,7 @@ module.exports = router;
 
 /**
  * @swagger
- * /login:
+ * /auth/login:
  *   post:
  *     summary: Login a user
  *     tags: [Authentication]
@@ -76,7 +76,7 @@ module.exports = router;
 
 /**
  * @swagger
- * /me:
+ * /auth/me:
  *   get:
  *     summary: Get the logged in user's details
  *     tags: [Authentication]
@@ -93,7 +93,7 @@ module.exports = router;
 
 /**
  * @swagger
- * /updatedetails:
+ * /auth/updatedetails:
  *   put:
  *     summary: Update the logged in user's details
  *     tags: [Authentication]
@@ -116,7 +116,7 @@ module.exports = router;
 
 /**
  * @swagger
- * /updatepassword:
+ * /auth/updatepassword:
  *   put:
  *     summary: Update the logged in user's password
  *     tags: [Authentication]
@@ -139,7 +139,7 @@ module.exports = router;
 
 /**
  * @swagger
- * /logout:
+ * /auth/logout:
  *   get:
  *     summary: Logout the current user
  *     tags: [Authentication]
@@ -154,7 +154,7 @@ module.exports = router;
 
 /**
  * @swagger
- * /deleteaccount:
+ * /auth/deleteaccount:
  *   delete:
  *     summary: Delete the logged in user's account
  *     tags: [Authentication]
