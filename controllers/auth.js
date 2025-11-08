@@ -44,7 +44,7 @@ exports.login = async (req, res, next) => {
         const user = await User.findOne({ email }).select('+password');
 
         if (!user) {
-            return res.status(400).json({
+            return res.status(404).json({
                 success: false,
                 message: 'Invalid credentials'
             });
@@ -122,7 +122,7 @@ exports.updateDetails = async (req, res, next) => {
         });
 
         if (!user) {
-            return res.status(400).json({success: false});
+            return res.status(404).json({success: false});
         }
 
         res.status(200).json({
@@ -153,7 +153,7 @@ exports.updatePassword = async (req, res, next) => {
         const user = await User.findById(req.user.id).select('+password');
 
         if (!user) {
-            return res.status(400).json({success: false});
+            return res.status(404).json({success: false});
         }
 
         // Check current password
@@ -202,10 +202,7 @@ exports.deleteAccount = async (req, res, next) => {
         const user = await User.findById(req.user.id);
 
         if (!user) {
-            return res.status(404).json({
-                success: false,
-                message: `User not found with id of ${req.user.id}`
-            });
+            return res.status(404).json({success: false});
         }
 
         await Reservation.deleteMany({user: req.user.id});
