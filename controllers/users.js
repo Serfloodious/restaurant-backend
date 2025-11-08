@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const Reservation = require('../models/Reservation');
 
 // @desc    Get all users
 // @route   GET /api/v1/users
@@ -96,6 +97,43 @@ exports.getUser = async (req, res, next) => {
         res.status(200).json({
             success: true,
             data: user
+        });
+    } catch (err) {
+        res.status(400).json({success: false});
+    }
+};
+
+// @desc    Delete user
+// @route   DELETE /api/v1/users/:id
+// @access  Private
+exports.deleteUser = async (req, res, next) => {
+    try {
+        const userIdToDelete = req.params.id;
+        const adminId = req.user.id;
+
+        // Prevent admin from deleting their own account
+        if (userIdToDelete === adminId) {
+            return res.status(400).json({
+                success: false,
+                message: 'Admin users cannot delete their own accounts'
+            });
+        }
+
+        const user = await User.findById(userIdToDelete);
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: `User not found with id of ${userIdToDelete}`
+            });
+        }
+
+        await Reservation.deleteMany({user: userIdToDelete});
+        await User.deleteOne({_id: userIdToDelete});
+
+        res.status(200).json({
+            success: true,
+            data: {}
         });
     } catch (err) {
         res.status(400).json({success: false});
