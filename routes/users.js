@@ -104,3 +104,25 @@ module.exports = router;
  *       404:
  *         description: The user was not found
  */
+
+/**
+ * @swagger
+ * /users/{id}:
+ *   delete:
+ *     summary: Delete the user by id
+ *     tags: [Users]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The user id
+ *     responses:
+ *       200:
+ *         description: The user was deleted
+ *       400:
+ *         description: Admin users cannot delete their own accounts
+ *       404:
+ *         description: The user was not found
+ */
