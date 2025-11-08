@@ -169,3 +169,29 @@ module.exports = router;
  *       404:
  *         description: The reservation was not found
  */
+
+/**
+ * @swagger
+ * /restaurants/{restaurantId}/reservations:
+ *   get:
+ *     summary: Returns the list of reservations for a specific restaurant
+ *     tags: [Reservations]
+ *     parameters:
+ *       - in: path
+ *         name: restaurantId
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The restaurant id
+ *     responses:
+ *       200:
+ *         description: The list of the reservations for the restaurant
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Reservation'
+ *       404:
+ *         description: The restaurant was not found
+ */
