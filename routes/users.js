@@ -61,7 +61,7 @@ module.exports = router;
  * @swagger
  * tags:
  *   name: Users
- *   description: User retrieval
+ *   description: The users managing API
  */
 
 /**

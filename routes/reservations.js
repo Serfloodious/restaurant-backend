@@ -97,7 +97,7 @@ module.exports = router;
 
 /**
  * @swagger
- * /reservations:
+ * /restaurants/{restaurantId}/reservations:
  *   post:
  *     summary: Create a new reservation
  *     tags: [Reservations]
